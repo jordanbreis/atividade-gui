@@ -4,13 +4,14 @@ const context = canvas.getContext('2d')
 const raioDaBola = 10
 const alturaDaRaquete = 10
 const larguraDaRaquete = 75
-const contagemDeBlocosEmLinha = 6
-const contagemDeBlocosEmColuna = 3
+const contagemDeBlocosEmLinha = 2
+const contagemDeBlocosEmColuna = 1
 const larguraDoBloco = 75
 const alturaDoBloco = 20
 const enchimentoDoBloco = 10
 const parteSuperiorDoBloco = 60
 const lateralEsquerdaDoBloco = 10
+const nivel = 0
 
 canvas.width =
   (larguraDoBloco + enchimentoDoBloco) * contagemDeBlocosEmLinha +
@@ -76,7 +77,19 @@ function detectaColisao() {
           pontos++
 
           if (pontos == contagemDeBlocosEmLinha * contagemDeBlocosEmColuna) {
-            alert('Você ganhou, parabéns')
+            nivel++
+            dx = dx+1
+            dy = dy-1
+            alert('Proximo nivel')
+            
+            for (let c = 0; c < contagemDeBlocosEmColuna; c++) {
+              //blocos[c] = []
+              for (let l = 0; l < contagemDeBlocosEmLinha; l++) {
+                blocos[c][l].estado = 1
+              }
+            }
+
+            desenha()
           }
         }
       }
@@ -108,7 +121,7 @@ function desenhaRaquete() {
 function desenhaPontos() {
   context.font = '24px Arial'
   context.fillStyle = 'white'
-  context.fillText(`Pontos: ${pontos}`, 8, 30)
+  context.fillText(`Pontos: ${pontos}, Nivel: ${nivel}`, 8, 30)
 }
 
 function desenhaVidas() {
@@ -121,6 +134,7 @@ function desenhaBlocos() {
   for (let c = 0; c < contagemDeBlocosEmColuna; c++) {
     for (let r = 0; r < contagemDeBlocosEmLinha; r++) {
       if (blocos[c][r].estado == 1) {
+        
         const blocoX =
           r * (larguraDoBloco + enchimentoDoBloco) + lateralEsquerdaDoBloco
 
